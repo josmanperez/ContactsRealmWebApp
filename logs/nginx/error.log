@@ -22,3 +22,7 @@
 2020/12/29 17:26:37 [error] 29#29: *1 directory index of "/var/www/api/" is forbidden, client: 172.18.0.1, server: , request: "GET / HTTP/1.1", host: "localhost"
 2020/12/29 17:26:37 [error] 29#29: *1 directory index of "/var/www/api/" is forbidden, client: 172.18.0.1, server: , request: "GET / HTTP/1.1", host: "localhost"
 2020/12/29 17:26:38 [error] 29#29: *1 directory index of "/var/www/api/" is forbidden, client: 172.18.0.1, server: , request: "GET / HTTP/1.1", host: "localhost"
+2020/12/29 17:57:05 [error] 29#29: *22 open() "/var/www/api/public/assets/img/avataaars.svg" failed (2: No such file or directory), client: 172.18.0.1, server: , request: "GET /assets/img/avataaars.svg HTTP/1.1", host: "localhost", referrer: "http://localhost/"
+2020/12/29 17:58:17 [error] 29#29: *22 open() "/var/www/api/public/images/logo.svgs" failed (2: No such file or directory), client: 172.18.0.1, server: , request: "GET /images/logo.svgs HTTP/1.1", host: "localhost", referrer: "http://localhost/"
+2020/12/29 17:58:24 [error] 29#29: *22 open() "/var/www/api/public/images/logo.svgs" failed (2: No such file or directory), client: 172.18.0.1, server: , request: "GET /images/logo.svgs HTTP/1.1", host: "localhost", referrer: "http://localhost/"
+2020/12/29 17:58:25 [error] 29#29: *22 open() "/var/www/api/public/home.php" failed (2: No such file or directory), client: 172.18.0.1, server: , request: "GET /home.php HTTP/1.1", host: "localhost", referrer: "http://localhost/"

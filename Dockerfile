@@ -9,14 +9,11 @@ COPY package*.json ./
 
 # run npm install in our local machine
 RUN npm install --quiet
-#RUN npm install realm --quiet
-
-# copy the generated modules and all other files to the container
-#COPY . .
+RUN npm install -g nodemon
 
 # our app is running on port 5000 within the container, so need to expose it
 EXPOSE 5000
 
 # the command that starts our app
-CMD ["node", "api.files/app.js"]
+CMD ["nodemon", "api.files/app.js"]
 

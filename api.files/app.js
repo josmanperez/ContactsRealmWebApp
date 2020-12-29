@@ -38,14 +38,14 @@ async function run() {
   });
  	const contacts = realm.objects("Contact");
  	console.log(contacts);
-	realm.write(() => {
-	  const newContact = realm.create("Contact", {
-	    _id: new BSON.ObjectID(),
-	    _partition: partitionValueString,
-	    firstName: "Prueba",
-	    lastName: "Prueba",
-	  });	
-	});
+	// realm.write(() => {
+	//   const newContact = realm.create("Contact", {
+	//     _id: new BSON.ObjectID(),
+	//     _partition: partitionValueString,
+	//     firstName: "Prueba",
+	//     lastName: "Prueba",
+	//   });	
+	// });
 };
 
 api.listen(5000, function() {

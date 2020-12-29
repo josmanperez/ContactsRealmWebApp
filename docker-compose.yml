@@ -17,9 +17,10 @@ services:
         image: nginx:latest
         volumes:
             - ${CLIENT_PATH}:/var/www/api
+            - ./config/site.conf:/etc/nginx/conf.d/default.conf
             - ${NGINX_APIX_LOGS}:/var/log/nginx/
         environment:
             TZ: 'Europe/Madrid'
         ports:
-            - '8080:80'
+            - '80:80'
                        

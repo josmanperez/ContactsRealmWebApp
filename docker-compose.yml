@@ -1,0 +1,25 @@
+version: '3.3'
+
+services:
+    nodeserver:
+        container_name: nodebackend
+        build:
+            context: .
+            dockerfile: Dockerfile
+        #volumes:
+        #    - ${APP_PATH}:/usr/src/app
+        environment:
+            TZ: 'Europe/Madrid'
+        ports:
+            - "5000:5000"
+    nginx:
+        container_name: client
+        image: nginx:latest
+        volumes:
+            - ${APP_PATH}:/var/www/api
+            - ${NGINX_APIX_LOGS}:/var/log/nginx/
+        environment:
+            TZ: 'Europe/Madrid'
+        ports:
+            - '8080:80'
+                       

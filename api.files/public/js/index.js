@@ -1,18 +1,13 @@
 $(document).ready(function () {
   $('#contactTable').DataTable({
+    paging: false,
+    info: true,
+    searching: false,
     ajax: {
-      url: 'http://localhost/test.json',
+      url: 'http://localhost:5000/contacts',
       dataSrc: ''
     },
     columns: [
-      {
-        data: '_id',
-        visible: false
-      },
-      {
-        data: '_partition',
-        visible: false
-      },
       { data: 'firstName' },
       { data: 'lastName' }
     ]

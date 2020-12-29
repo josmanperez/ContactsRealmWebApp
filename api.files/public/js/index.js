@@ -1,6 +1,21 @@
 $(document).ready(function () {
-  $.get('http://localhost:5000/contacts', function(data, status) {
-    console.log(data);
-  })
+  $('#contactTable').DataTable({
+    ajax: {
+      url: 'http://localhost/test.json',
+      dataSrc: ''
+    },
+    columns: [
+      {
+        data: '_id',
+        visible: false
+      },
+      {
+        data: '_partition',
+        visible: false
+      },
+      { data: 'firstName' },
+      { data: 'lastName' }
+    ]
+  });
 });
 

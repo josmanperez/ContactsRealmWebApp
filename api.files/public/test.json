@@ -1,0 +1,62 @@
+[
+  {
+    "_id": "5feafa694ade489d06d8c720",
+    "_partition": "contacts",
+    "firstName": "Francisco",
+    "lastName": "Fernández"
+  },
+  {
+    "_id": "5feaf86ba307f699cf7c0ebc",
+    "_partition": "contacts",
+    "firstName": "Miguel",
+    "lastName": "Costas"
+  },
+  {
+    "_id": "5feb4a47507af63ea35928fe",
+    "_partition": "contacts",
+    "firstName": "Prueba",
+    "lastName": "Prueba"
+  },
+  {
+    "_id": "5feaf89b7bac7c17ebf841d6",
+    "_partition": "contacts",
+    "firstName": "Sonia",
+    "lastName": "Fuentes"
+  },
+  {
+    "_id": "5feb408c79541a27a78fd66b",
+    "_partition": "contacts",
+    "firstName": "Sandra",
+    "lastName": "Canedo"
+  },
+  {
+    "_id": "5feafa694ade489d06d8c720",
+    "_partition": "contacts",
+    "firstName": "Francisco",
+    "lastName": "Fernández"
+  },
+  {
+    "_id": "5feaf86ba307f699cf7c0ebc",
+    "_partition": "contacts",
+    "firstName": "Miguel",
+    "lastName": "Costas"
+  },
+  {
+    "_id": "5feb4a47507af63ea35928fe",
+    "_partition": "contacts",
+    "firstName": "Prueba",
+    "lastName": "Prueba"
+  },
+  {
+    "_id": "5feaf89b7bac7c17ebf841d6",
+    "_partition": "contacts",
+    "firstName": "Sonia",
+    "lastName": "Fuentes"
+  },
+  {
+    "_id": "5feb408c79541a27a78fd66b",
+    "_partition": "contacts",
+    "firstName": "Sandra",
+    "lastName": "Canedo"
+  }
+]

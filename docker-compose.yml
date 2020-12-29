@@ -6,8 +6,8 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-        #volumes:
-        #    - ${APP_PATH}:/usr/src/app
+        volumes:
+            - ${BACKEND_PATH}:/usr/src/app
         environment:
             TZ: 'Europe/Madrid'
         ports:
@@ -16,7 +16,7 @@ services:
         container_name: client
         image: nginx:latest
         volumes:
-            - ${APP_PATH}:/var/www/api
+            - ${CLIENT_PATH}:/var/www/api
             - ${NGINX_APIX_LOGS}:/var/log/nginx/
         environment:
             TZ: 'Europe/Madrid'

@@ -1,6 +1,7 @@
 const express = require("express");
  const BSON = require("bson");
 const Realm = require("realm");
+const { Socket } = require("dgram");
 const app = new Realm.App({ id: "synctest-jigxx" });
 const partitionValueString = "contacts"
 
@@ -41,6 +42,7 @@ async function run() {
     }
   });
   const contacts = realm.objects("Contact");
+  contacts.addListener(listener);
   return contacts;
   // realm.write(() => {
   //   const newContact = realm.create("Contact", {
@@ -51,5 +53,12 @@ async function run() {
   //   });	
   // });
 };
+
+function listener(contacts, changes) {
+  changes.insertions.forEach((index) => {
+    let contact = contacts[index];
+    console.log("new contact: " + contact);
+  })
+}
 
 module.exports = router;

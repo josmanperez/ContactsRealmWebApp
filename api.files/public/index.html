@@ -80,7 +80,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button id="btnSaveContact" onclick="saveContact()" type="button" class="btn btn-primary">Save
+                    <button id="btnSaveContact" onclick="saveContact()" type="button" class="btn btn-primary">
+                        <span id="loadingAdd" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>Save
                     </button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
@@ -111,9 +112,13 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button id="btnDeleteContact" onclick="deleteContact($('#contactId').val())" type="button" class="btn btn-danger mr-auto">Delete</button>
+                    <button id="btnDeleteContact" onclick="deleteContact($('#contactId').val())" type="button" class="btn btn-danger mr-auto">
+                        <span id="loadingDelete" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>
+                        Delete</button>
                     <button id="btnUpdateContact" onclick="updateContact()" type="button"
-                        class="btn btn-primary">Update</button>
+                        class="btn btn-primary">
+                        <span id="loadingUpdate" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>
+                        Update</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>

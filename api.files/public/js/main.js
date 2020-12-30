@@ -18,15 +18,88 @@ function deleteContact(id) {
     url: 'http://localhost:5000/contacts',
     contentType: 'application/json',
     data: JSON.stringify({ '_id': id }),
+    beforeSend: function(xhr) {
+      $('#loadingDelete').attr('hidden',false);
+      $('#btnDeleteContact').attr('disabled', true);
+    },
     success: function (msg) {
       console.log('The user has been sent to be deleted');
-      $('#updateContact').modal('hide');
     },
     error: function (jqXhr, textStatus, errorThrown) {
-      console.log(errorThrown);
+      console.log(errorThrown);      
+    },
+    complete: function() {
+      $('#loadingDelete').attr('hidden', true);
+      $('#btnDeleteContact').attr('disabled', false);
       $('#updateContact').modal('hide');
     }
   });
+}
+
+function saveContact() {
+  var firstName = $('#formControlInput1').val()
+  var lastName = $('#formControlInput2').val()
+  if (firstName === '' || lastName === '') {
+    alert('First Name and Last Name are mandatory');
+  } else {
+    var data = { 'firstName': firstName, 'lastName': lastName };
+    $.ajax({
+      type: "post",
+      url: 'http://localhost:5000/contacts',
+      contentType: 'application/json',
+      data: JSON.stringify(data),
+      beforeSend: function() {
+        $('#loadingAdd').attr('hidden', false);
+        $('#btnSaveContact').attr('disabled', true);
+      },
+      success: function (msg) {
+        console.log(`The user has been sent to be created. ${msg}`);
+      },
+      error: function (jqXhr, textStatus, errorThrown) {
+        console.error(errorThrown);        
+      },
+      complete: function() {
+        $('#addContact').modal('hide');
+        $('#loadingAdd').attr('hidden', true);
+        $('#btnSaveContact').attr('disabled', false);
+        $('#formControlInput1').val('');
+        $('#formControlInput2').val('');
+      }
+    });
+  }
+}
+
+function updateContact() {
+  console.log("update");
+  var firstName = $('#formControlUpdate1').val()
+  var lastName = $('#formControlUpdate2').val()
+  var id = $("#contactId").val()
+  if (firstName === '' || lastName === '') {
+    alert('First Name and Last Name are mandatory');
+  } else {
+    var data = { '_id': id, 'firstName': firstName, 'lastName': lastName };
+    $.ajax({
+      type: "put",
+      url: 'http://localhost:5000/contacts',
+      contentType: 'application/json',
+      data: JSON.stringify(data),
+      beforeSend: function() {
+        $('#btnUpdateContact').attr('disabled', true);
+        $('#loadingUpdate').attr('hidden', false);
+      },
+      success: function (msg) {
+        console.log('The user has been updated.');
+      },
+      error: function (jqXhr, textStatus, errorThrown) {
+        console.error(errorThrown);
+      },
+      complete: function() {
+        $('#updateContact').modal('hide');
+        $('#loadingUpdate').attr('hidden', true);
+        $('#btnUpdateContact').attr('disabled', false);
+      }
+    });
+  }
 }
 
 function loadDataTable() {
@@ -52,56 +125,4 @@ function showContactTable() {
       { data: 'lastName' }
     ]
   });
-}
-
-function saveContact() {
-  var firstName = $('#formControlInput1').val()
-  var lastName = $('#formControlInput2').val()
-  if (firstName === '' || lastName === '') {
-    alert('First Name and Last Name are mandatory');
-  } else {
-    var data = { 'firstName': firstName, 'lastName': lastName };
-    $.ajax({
-      type: "post",
-      url: 'http://localhost:5000/contacts',
-      contentType: 'application/json',
-      data: JSON.stringify(data),
-      success: function (msg) {
-        console.log(`The user has been sent to be created. ${msg}`);
-        $('#addContact').modal('hide');
-      },
-      error: function (jqXhr, textStatus, errorThrown) {
-        console.log(textStatus);
-        console.log(errorThrown);
-        $('#addContact').modal('hide');
-      }
-    });
-  }
-}
-
-function updateContact() {
-  console.log("update");
-  var firstName = $('#formControlUpdate1').val()
-  var lastName = $('#formControlUpdate2').val()
-  var id = $("#contactId").val()
-  if (firstName === '' || lastName === '') {
-    alert('First Name and Last Name are mandatory');
-  } else {
-    var data = { '_id': id, 'firstName': firstName, 'lastName': lastName };
-    $.ajax({
-      type: "put",
-      url: 'http://localhost:5000/contacts',
-      contentType: 'application/json',
-      data: JSON.stringify(data),
-      success: function (msg) {
-        console.log(`The user has been updated. ${msg}`);
-        $('#updateContact').modal('hide');
-      },
-      error: function (jqXhr, textStatus, errorThrown) {
-        console.log(textStatus);
-        console.log(errorThrown);
-        $('#updateContact').modal('hide');
-      }
-    });
-  }
 }

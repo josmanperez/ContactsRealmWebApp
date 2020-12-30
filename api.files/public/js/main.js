@@ -23,15 +23,25 @@ $(document).ready(function () {
 
 function saveContact() {
   var firstName = $('#formControlInput1').val()
-  var lastNAme = $('#formControlInput2').val() 
-  if (firstName === '' || lastNAme === '') {
+  var lastName = $('#formControlInput2').val()
+  if (firstName === '' || lastName === '') {
     alert('First Name and Last Name are mandatory');
   } else {
-    $.$.post("url", data,
-      function (data, textStatus, jqXHR) {
-        
+    var data = {'firstName' : firstName, 'lastName': lastName};
+    $.ajax({
+      type: "post",
+      url: 'http://localhost:5000/contacts',
+      contentType: 'application/json',
+      data: JSON.stringify(data),
+      success: function (msg) {
+        console.log(`The user has been created. ${msg}`);
+        $('#addContact').modal('hide');
       },
-      "dataType"
-    );
+      error: function (jqXhr, textStatus, errorThrown) {
+        console.log(textStatus);
+        console.log(errorThrown);
+        $('#addContact').modal('hide');
+      }
+    });
   }
 }

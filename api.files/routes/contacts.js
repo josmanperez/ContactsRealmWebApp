@@ -27,8 +27,9 @@ router.get('/', async (req, res) => {
 
 // Add contact
 router.post('/', async (req, res) => {
+  console.log(req.body);
   if (!("firstName" in req.body) || (!("lastName" in req.body))) {
-    res.status(400).send("Missing firstname or lastname variables");
+    res.status(400).send("Missing firstName or lastName variables");
   } else {
     await save(req.body).catch(err => {
       console.error("Failed to save contact", err);

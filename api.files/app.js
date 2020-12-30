@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 const contacts = require('./routes/contacts');
-app.use('/contacts', contacts);
+app.use('/contacts', cors(), contacts);
 
 app.get("/", cors(), function (req, res) {
 	res.send("Contacts API");

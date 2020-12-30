@@ -3,6 +3,7 @@ const BSON = require("bson");
 const Realm = require("realm");
 const app = new Realm.App({ id: "synctest-jigxx" });
 const partitionValueString = "contacts"
+var isListener = false;
 
 const Contact = {
   name: 'Contact',
@@ -75,7 +76,11 @@ async function read() {
     }
   });
   const contacts = realm.objects("Contact");
-  contacts.addListener(listener);
+  console.log("listener: " + isListener)
+  if (!(isListener)) {
+    contacts.addListener(listener);
+    isListener = true;
+  } 
   return contacts;
 };
 

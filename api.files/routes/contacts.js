@@ -58,9 +58,10 @@ function listener(contacts, changes) {
     let contact = contacts[index];
     console.log("new contact: " + contact);
     io.on("connection", (socket) => {
+      console.log("emitiendo evento");
       socket.emit("hello", contact);
     });
-  })
+  });
 }
 
 module.exports = router;

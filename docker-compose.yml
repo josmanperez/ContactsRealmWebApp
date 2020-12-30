@@ -6,8 +6,8 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-        volumes:
-            - ${BACKEND_PATH}:/usr/src/app
+        #volumes:
+        #    - ${BACKEND_PATH}:/usr/src/app
         environment:
             TZ: 'Europe/Madrid'
         ports:

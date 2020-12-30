@@ -83,10 +83,15 @@ function listener(contacts, changes) {
   changes.insertions.forEach((index) => {
     let contact = contacts[index];
     console.log("new contact: " + contact);
-    io.on("connection", (socket) => {
-      console.log("emitiendo evento");
-      socket.emit("hello", contact);
-    });
+    socket.emit("contact", "new contact created");
+  });
+  changes.modifications.forEach((index) => {
+    let contact = contacts[index];
+    console.log("updated contact: " + contact);
+    socket.emit("contact", "contact updated");
+  });
+  changes.deletions.forEach((index) => {
+    socket.emit("contact", "contact deleted");
   });
 }
 

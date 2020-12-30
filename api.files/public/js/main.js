@@ -1,5 +1,12 @@
 $(document).ready(function () {
+  showContactTable();
+});
 
+function loadDataTable() {
+  $('#contactTable').DataTable().ajax.reload();
+}
+
+function showContactTable() {
   // Datatable setup
   $('#contactTable').DataTable({
     paging: false,
@@ -14,12 +21,7 @@ $(document).ready(function () {
       { data: 'lastName' }
     ]
   });
-
-  // $("#btnSaveContact").click(function() {
-  //   alert($("#formControlInput1").value);
-
-  // });
-});
+}
 
 function saveContact() {
   var firstName = $('#formControlInput1').val()

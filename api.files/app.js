@@ -22,11 +22,8 @@ app.get("/", cors(), function (req, res) {
 
 // Sockets
 io.on('connection', (socket) => {
+	global.socket = socket;
 	console.log('a client is connected');
-	// setTimeout(function() {
-	// 	console.log("Hola despues de 3 seg");
-	// 	socket.emit("hello", "Después de 3 seg");
-	// }, 3000);
 });
 
 // Main app

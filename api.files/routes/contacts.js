@@ -34,6 +34,7 @@ router.post('/', async (req, res) => {
     await save(req.body).catch(err => {
       console.error("Failed to save contact", err);
     })
+    socket.emit("contact", "new contact created");
     res.status(201).send();
   }
 });
@@ -76,14 +77,6 @@ async function read() {
   const contacts = realm.objects("Contact");
   contacts.addListener(listener);
   return contacts;
-  // realm.write(() => {
-  //   const newContact = realm.create("Contact", {
-  //     _id: new BSON.ObjectID(),
-  //     _partition: partitionValueString,
-  //     firstName: "Prueba",
-  //     lastName: "Prueba",
-  //   });	
-  // });
 };
 
 function listener(contacts, changes) {

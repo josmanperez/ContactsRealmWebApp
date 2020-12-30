@@ -1,5 +1,8 @@
 const socket = io("http://localhost:5000");
-socket.on("hello", (arg) => {
-  alert(arg);
-  console.log(arg); // world
+socket.on("contact", (arg) => {
+  console.log(arg);
+  if (arg == "new contact created") {
+    // Reload the table 
+    loadDataTable();
+  }
 });

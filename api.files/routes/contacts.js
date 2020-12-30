@@ -52,6 +52,36 @@ router.put('/', async (req, res) => {
   }
 });
 
+// Delete
+router.delete('/', async (req, res) => {
+  if (!("_id" in req.body)) {
+    res.status(400).send("Missing id variable");
+  } else {
+    await remove(req.body).catch(err => {
+      console.error("Failed to delete contact", err);
+    })
+    socket.emit("Contact", "contact deleted");
+    res.status(204).send();
+  }
+});
+
+async function remove(body) {
+  console.log("DETELE");
+  await app.logIn(new Realm.Credentials.anonymous());
+  const realm = await Realm.open({
+    schema: [Contact],
+    sync: {
+      user: app.currentUser,
+      partitionValue: partitionValueString
+    }
+  });
+  let id = new BSON.ObjectID(body._id);
+  const contact = realm.objectForPrimaryKey('Contact', id);
+  realm.write(() => {
+    realm.delete(contact);
+  })
+}
+
 async function update(body) {
   console.log("UPDATE");
   await app.logIn(new Realm.Credentials.anonymous());
@@ -111,7 +141,7 @@ async function read() {
   const contacts = realm.objects("Contact");
   console.log("listener: " + isListener)
   if (!(isListener)) {
-    contacts.addListener(listener);
+    //contacts.addListener(listener);
     isListener = true;
   } 
   return contacts;

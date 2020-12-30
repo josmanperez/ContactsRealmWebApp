@@ -12,6 +12,31 @@ $(document).ready(function () {
   });
 });
 
+function deleteContact(id) {
+  $('#confirmationModal').modal('show');
+  $('#btnConfirmDelete').click(function (e) { 
+    console.log("cuantos deletes");
+    e.preventDefault();
+    $.ajax({
+      type: "delete",
+      url: 'http://localhost:5000/contacts',
+      contentType: 'application/json',
+      data: JSON.stringify({'_id' : id}),
+      success: function (msg) {
+        console.log('The user has been deleted');
+        $('#confirmationModal').modal('hide');
+        $('#updateContact').modal('hide');
+      },
+      error: function (jqXhr, textStatus, errorThrown) {
+        console.log(textStatus);
+        console.log(errorThrown);
+        $('#confirmationModal').modal('hide');
+        $('#updateContact').modal('hide');
+      }
+    });
+  });
+}
+
 function loadDataTable() {
   $('#contactTable').DataTable().ajax.reload();
 }
@@ -76,7 +101,7 @@ function updateContact() {
       contentType: 'application/json',
       data: JSON.stringify(data),
       success: function (msg) {
-        console.log(`The user has been created. ${msg}`);
+        console.log(`The user has been updated. ${msg}`);
         $('#updateContact').modal('hide');
       },
       error: function (jqXhr, textStatus, errorThrown) {

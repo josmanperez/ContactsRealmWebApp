@@ -1,5 +1,14 @@
 $(document).ready(function () {
-  showContactTable();
+  var table = showContactTable(table);
+
+  $('#contactTable tbody').on('click', 'tr', function () {
+    var firstName = table.row(this).data().firstName;
+    var lastName = table.row(this).data().lastName;
+    $('#formControlUpdate1').val(firstName);
+    $('#formControlUpdate2').val(lastName);
+    $('#updateContact').modal('show');
+
+  });
 });
 
 function loadDataTable() {
@@ -8,7 +17,7 @@ function loadDataTable() {
 
 function showContactTable() {
   // Datatable setup
-  $('#contactTable').DataTable({
+  return $('#contactTable').DataTable({
     paging: false,
     info: true,
     searching: false,
@@ -45,5 +54,14 @@ function saveContact() {
         $('#addContact').modal('hide');
       }
     });
+  }
+}
+
+function updateContact() {
+  var firstName = $('#formControlUpdate1').val()
+  var lastName = $('#formControlUpdate2').val()
+  if (firstName === '' || lastName === '') {
+    alert('First Name and Last Name are mandatory');
+  } else {
   }
 }

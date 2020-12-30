@@ -1,4 +1,5 @@
-const app = require("express")();
+const express = require('express');
+const app = express();
 const server = require('http').createServer(app);
 global.io = require('socket.io')(server, {
 	cors: {
@@ -9,6 +10,8 @@ const cors = require('cors');
 
 // Middleware
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
 const contacts = require('./routes/contacts');
 app.use('/contacts', contacts);
@@ -20,10 +23,10 @@ app.get("/", cors(), function (req, res) {
 // Sockets
 io.on('connection', (socket) => {
 	console.log('a client is connected');
-	setTimeout(function() {
-		console.log("Hola despues de 3 seg");
-		socket.emit("hello", "Después de 3 seg");
-	}, 3000);
+	// setTimeout(function() {
+	// 	console.log("Hola despues de 3 seg");
+	// 	socket.emit("hello", "Después de 3 seg");
+	// }, 3000);
 });
 
 // Main app

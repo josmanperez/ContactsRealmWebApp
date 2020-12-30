@@ -67,16 +67,19 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="fistName" placeholder="Contact First Name" aria-label="Contact First Name">
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="lastName" placeholder="Contact Last Name"
-                            aria-label="Contact Last Name">
-                    </div>
+                    <form>
+                        <div class="form-group">
+                            <label for="formControlInput1">First Name</label>
+                            <input type="text" class="form-control" id="formControlInput1">
+                        </div>
+                        <div class="form-group">
+                            <label for="formControlInput2">Last Name</label>
+                            <input type="text" class="form-control" id="formControlInput2">
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Save
+                    <button id="btnSaveContact" onclick="saveContact()" type="button" class="btn btn-primary">Save
                     </button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>

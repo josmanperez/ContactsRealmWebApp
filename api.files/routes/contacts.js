@@ -19,13 +19,45 @@ const router = express.Router();
 
 // Get Contacts List
 router.get('/', async (req, res) => {
-  const contacts = await run().catch(err => {
+  const contacts = await read().catch(err => {
     console.error("Failed to execute in:", err)
   });
   res.send(contacts);
 })
 
-async function run() {
+// Add contact
+router.post('/', async (req, res) => {
+  if (!("firstName" in req.body) || (!("lastName" in req.body))) {
+    res.status(400).send("Missing firstname or lastname variables");
+  } else {
+    await save(req.body).catch(err => {
+      console.error("Failed to save contact", err);
+    })
+    res.status(201).send();
+  }
+});
+
+async function save(body) {
+  await app.logIn(new Realm.Credentials.anonymous());
+  const realm = await Realm.open({
+    schema: [Contact],
+    sync: {
+      user: app.currentUser,
+      partitionValue: partitionValueString
+    }
+  });
+  realm.write(() => {
+    const newContact = realm.create("Contact", {
+      _id: new BSON.ObjectID(),
+      _partition: partitionValueString,
+      firstName: body.firstName,
+      lastName: body.lastName,
+    });
+    return newContact;
+  });
+};
+
+async function read() {
   // Create a Credentials object to identify the user.
   // Anonymous credentials don't have any identifying information, but other
   // authentication providers accept additional data, like a user's email and

@@ -1,4 +1,6 @@
 $(document).ready(function () {
+
+  // Datatable setup
   $('#contactTable').DataTable({
     paging: false,
     info: true,
@@ -12,4 +14,9 @@ $(document).ready(function () {
       { data: 'lastName' }
     ]
   });
+
+  // Add contact 
+  $("#saveContact").on('click', function () {
+    alert("click");
+  })
 });

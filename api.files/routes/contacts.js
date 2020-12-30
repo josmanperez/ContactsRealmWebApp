@@ -1,7 +1,6 @@
 const express = require("express");
- const BSON = require("bson");
+const BSON = require("bson");
 const Realm = require("realm");
-const { Socket } = require("dgram");
 const app = new Realm.App({ id: "synctest-jigxx" });
 const partitionValueString = "contacts"
 
@@ -58,6 +57,9 @@ function listener(contacts, changes) {
   changes.insertions.forEach((index) => {
     let contact = contacts[index];
     console.log("new contact: " + contact);
+    io.on("connection", (socket) => {
+      socket.emit("hello", contact);
+    });
   })
 }
 

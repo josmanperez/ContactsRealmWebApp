@@ -77,12 +77,12 @@ function updateContact() {
       data: JSON.stringify(data),
       success: function (msg) {
         console.log(`The user has been created. ${msg}`);
-        $('#addContact').modal('hide');
+        $('#updateContact').modal('hide');
       },
       error: function (jqXhr, textStatus, errorThrown) {
         console.log(textStatus);
         console.log(errorThrown);
-        $('#addContact').modal('hide');
+        $('#updateContact').modal('hide');
       }
     });
   }

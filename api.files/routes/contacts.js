@@ -60,7 +60,7 @@ router.delete('/', async (req, res) => {
     await remove(req.body).catch(err => {
       console.error("Failed to delete contact", err);
     })
-    socket.emit("Contact", "contact deleted");
+    socket.emit("contact", "contact deleted");
     res.status(204).send();
   }
 });

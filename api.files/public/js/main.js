@@ -13,27 +13,19 @@ $(document).ready(function () {
 });
 
 function deleteContact(id) {
-  $('#confirmationModal').modal('show');
-  $('#btnConfirmDelete').click(function (e) { 
-    console.log("cuantos deletes");
-    e.preventDefault();
-    $.ajax({
-      type: "delete",
-      url: 'http://localhost:5000/contacts',
-      contentType: 'application/json',
-      data: JSON.stringify({'_id' : id}),
-      success: function (msg) {
-        console.log('The user has been deleted');
-        $('#confirmationModal').modal('hide');
-        $('#updateContact').modal('hide');
-      },
-      error: function (jqXhr, textStatus, errorThrown) {
-        console.log(textStatus);
-        console.log(errorThrown);
-        $('#confirmationModal').modal('hide');
-        $('#updateContact').modal('hide');
-      }
-    });
+  $.ajax({
+    type: "delete",
+    url: 'http://localhost:5000/contacts',
+    contentType: 'application/json',
+    data: JSON.stringify({ '_id': id }),
+    success: function (msg) {
+      console.log('The user has been sent to be deleted');
+      $('#updateContact').modal('hide');
+    },
+    error: function (jqXhr, textStatus, errorThrown) {
+      console.log(errorThrown);
+      $('#updateContact').modal('hide');
+    }
   });
 }
 
@@ -75,7 +67,7 @@ function saveContact() {
       contentType: 'application/json',
       data: JSON.stringify(data),
       success: function (msg) {
-        console.log(`The user has been created. ${msg}`);
+        console.log(`The user has been sent to be created. ${msg}`);
         $('#addContact').modal('hide');
       },
       error: function (jqXhr, textStatus, errorThrown) {
@@ -88,6 +80,7 @@ function saveContact() {
 }
 
 function updateContact() {
+  console.log("update");
   var firstName = $('#formControlUpdate1').val()
   var lastName = $('#formControlUpdate2').val()
   var id = $("#contactId").val()

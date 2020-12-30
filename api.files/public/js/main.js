@@ -4,10 +4,11 @@ $(document).ready(function () {
   $('#contactTable tbody').on('click', 'tr', function () {
     var firstName = table.row(this).data().firstName;
     var lastName = table.row(this).data().lastName;
+    var id = table.row(this).data()._id;
     $('#formControlUpdate1').val(firstName);
     $('#formControlUpdate2').val(lastName);
+    $("#contactId").val(id);
     $('#updateContact').modal('show');
-
   });
 });
 
@@ -26,6 +27,10 @@ function showContactTable() {
       dataSrc: ''
     },
     columns: [
+      {
+        data: '_id',
+        visible: false
+      },
       { data: 'firstName' },
       { data: 'lastName' }
     ]
@@ -38,7 +43,7 @@ function saveContact() {
   if (firstName === '' || lastName === '') {
     alert('First Name and Last Name are mandatory');
   } else {
-    var data = {'firstName' : firstName, 'lastName': lastName};
+    var data = { 'firstName': firstName, 'lastName': lastName };
     $.ajax({
       type: "post",
       url: 'http://localhost:5000/contacts',
@@ -60,8 +65,25 @@ function saveContact() {
 function updateContact() {
   var firstName = $('#formControlUpdate1').val()
   var lastName = $('#formControlUpdate2').val()
+  var id = $("#contactId").val()
   if (firstName === '' || lastName === '') {
     alert('First Name and Last Name are mandatory');
   } else {
+    var data = { '_id': id, 'firstName': firstName, 'lastName': lastName };
+    $.ajax({
+      type: "put",
+      url: 'http://localhost:5000/contacts',
+      contentType: 'application/json',
+      data: JSON.stringify(data),
+      success: function (msg) {
+        console.log(`The user has been created. ${msg}`);
+        $('#addContact').modal('hide');
+      },
+      error: function (jqXhr, textStatus, errorThrown) {
+        console.log(textStatus);
+        console.log(errorThrown);
+        $('#addContact').modal('hide');
+      }
+    });
   }
 }

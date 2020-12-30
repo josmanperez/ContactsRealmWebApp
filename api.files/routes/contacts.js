@@ -28,8 +28,7 @@ router.get('/', async (req, res) => {
 
 // Add contact
 router.post('/', async (req, res) => {
-  console.log(req.body);
-  if (!("firstName" in req.body) || (!("lastName" in req.body))) {
+  if (!("firstName" in req.body) || !("lastName" in req.body)) {
     res.status(400).send("Missing firstName or lastName variables");
   } else {
     await save(req.body).catch(err => {
@@ -40,7 +39,40 @@ router.post('/', async (req, res) => {
   }
 });
 
+// Update contact
+router.put('/', async (req, res) => {
+  if (!("firstName" in req.body) || !("lastName" in req.body) || !("_id" in req.body)) {
+    res.status(400).send("Missing firstName, lastName or id variables");
+  } else {
+    await update(req.body).catch(err => {
+      console.error("Failed to update contact", err);
+    });
+    socket.emit("contact", "contact updated");
+    res.status(200).send();
+  }
+});
+
+async function update(body) {
+  console.log("UPDATE");
+  await app.logIn(new Realm.Credentials.anonymous());
+  const realm = await Realm.open({
+    schema: [Contact],
+    sync: {
+      user: app.currentUser,
+      partitionValue: partitionValueString
+    }
+  });
+  let id = new BSON.ObjectID(body._id);
+  const contact = realm.objectForPrimaryKey('Contact', id);
+  const updatedContact = realm.write(() => {
+    contact.firstName = body.firstName;
+    contact.lastName = body.lastName;
+  });
+  return updatedContact;
+}
+
 async function save(body) {
+  console.log("SAVE");
   await app.logIn(new Realm.Credentials.anonymous());
   const realm = await Realm.open({
     schema: [Contact],
@@ -61,6 +93,7 @@ async function save(body) {
 };
 
 async function read() {
+  console.log("READ");
   // Create a Credentials object to identify the user.
   // Anonymous credentials don't have any identifying information, but other
   // authentication providers accept additional data, like a user's email and

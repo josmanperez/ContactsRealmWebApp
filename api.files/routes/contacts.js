@@ -138,7 +138,8 @@ async function read() {
       partitionValue: partitionValueString
     }
   });
-  const contacts = realm.objects("Contact");
+  const contacts = realm.objects("Contact").sorted("firstName");
+  console.log(contacts[0].firstName);
   console.log("listener: " + isListener)
   if (!(isListener)) {
     //contacts.addListener(listener);

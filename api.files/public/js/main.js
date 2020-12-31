@@ -111,7 +111,8 @@ function showContactTable() {
   return $('#contactTable').DataTable({
     paging: false,
     info: true,
-    searching: false,
+    searching: true,
+    order: [[1, "asc"]],
     ajax: {
       url: 'http://localhost:5000/contacts',
       dataSrc: ''

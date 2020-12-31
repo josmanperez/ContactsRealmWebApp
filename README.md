@@ -48,3 +48,7 @@ This project is based on NodeJS and Bootstrap. These are the libraries used in t
 
 All these libraries are in the `package.json`. 
 When executing a `docker-compose up --build -d` all the packages are automatically installed.
+
+# Step by Step
+
+Follow the link to the [Wiki](https://github.com/josmanperez/ContactsRealmWebApp/wiki) page for a step by step instruccionts on how to run this application.   

@@ -142,7 +142,7 @@ async function read() {
   console.log(contacts[0].firstName);
   console.log("listener: " + isListener)
   if (!(isListener)) {
-    //contacts.addListener(listener);
+    contacts.addListener(listener);
     isListener = true;
   } 
   return contacts;

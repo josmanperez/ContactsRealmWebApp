@@ -139,7 +139,6 @@ async function read() {
     }
   });
   const contacts = realm.objects("Contact").sorted("firstName");
-  console.log(contacts[0].firstName);
   console.log("listener: " + isListener)
   if (!(isListener)) {
     contacts.addListener(listener);
@@ -150,16 +149,19 @@ async function read() {
 
 function listener(contacts, changes) {
   changes.insertions.forEach((index) => {
+    console.log(`insert index: ${index}`);
     let contact = contacts[index];
     console.log("new contact: " + contact);
     socket.emit("contact", "new contact created");
   });
   changes.modifications.forEach((index) => {
+    console.log(`update index: ${index}`);
     let contact = contacts[index];
     console.log("updated contact: " + contact);
     socket.emit("contact", "contact updated");
   });
   changes.deletions.forEach((index) => {
+    console.log(`deletion index: ${index}`);
     socket.emit("contact", "contact deleted");
   });
 }

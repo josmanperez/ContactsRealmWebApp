@@ -1,6 +1,11 @@
 # ContactsRealmWebApp
 Application to demonstrate how to use Realm Sync with a Web App to do basic operations (CRUD)
 
+# Live Example
+This is the live example of the Web application running
+
+[![Live Example](http://g.recordit.co/5Ig4TUvKY6.gif)](https://s3.amazonaws.com/img0.recordit.co/5Ig4TUvKY6.mp4?AWSAccessKeyId=AKIAUQ5RURZ7ND2T2B6I&Expires=1610128177&Signature=VyS0lunNrdNsOxp2sVZUsTbk2X0=)
+
 # Description
 
 This application will list a table of contacts added to Mongo Realm and will synchronize the data with Realm Sync.

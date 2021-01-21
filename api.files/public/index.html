@@ -28,9 +28,9 @@
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li> -->
+                    <li class="nav-item active">
+                        <a class="nav-link" target="_blank" href="" data-toggle="modal" data-target="#informationModal"> GraphQL</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -125,18 +125,22 @@
         </div>
     </div>
 
-    <div id="confirmationModal" class="modal fade show" tabindex="-1" role="dialog">
+    <div id="informationModal" class="modal fade show" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Are you sure?</h5>
+                    <h5 class="modal-title">About GraphQL Server</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <div class="modal-body">
+                    <p>In order to be able to use this GraphQL server within this project, you need to clone this repository <a href="https://github.com/josmanperez/ContactsRealmGraphQL"> ContactsRealmGraphQL </a> 
+                    an run it to use GraphiQL querys to this application.</a></p>
+                </div>
                 <div class="modal-footer">
-                    <button id="btnConfirmDelete" type="button" class="btn btn-danger mr-auto">Yes</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <a class="btn btn-primary" href="http://localhost:5001/graphql" role="button">Ok</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

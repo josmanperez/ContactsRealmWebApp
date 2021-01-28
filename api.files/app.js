@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
+const Realm = require("realm");
+global.realmApp = new Realm.App({ id: "synctest-jigxx" });
+
 global.io = require('socket.io')(server, {
 	cors: {
 		origin: '*'
@@ -15,6 +18,8 @@ app.use(express.urlencoded({extended: true}));
 
 const contacts = require('./routes/contacts');
 app.use('/contacts', cors(), contacts);
+const users = require('./routes/users');
+app.use('/users', cors(), users);
 
 app.get("/", cors(), function (req, res) {
 	res.send("Contacts API");

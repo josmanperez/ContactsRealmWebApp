@@ -1,5 +1,5 @@
 node_modules/
+mongodb-realm/
 .DS_Store
 package-lock.json
-mongodb-realm
 logs/nginx/access.log

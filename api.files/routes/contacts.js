@@ -1,7 +1,5 @@
 const express = require("express");
 const BSON = require("bson");
-const Realm = require("realm");
-const app = new Realm.App({ id: "synctest-jigxx" });
 const partitionValueString = "contacts"
 var isListener = false;
 
@@ -67,11 +65,11 @@ router.delete('/', async (req, res) => {
 
 async function remove(body) {
   console.log("DETELE");
-  await app.logIn(new Realm.Credentials.anonymous());
+  await realmApp.logIn(new Realm.Credentials.anonymous());
   const realm = await Realm.open({
     schema: [Contact],
     sync: {
-      user: app.currentUser,
+      user: realmApp.currentUser,
       partitionValue: partitionValueString
     }
   });
@@ -84,11 +82,11 @@ async function remove(body) {
 
 async function update(body) {
   console.log("UPDATE");
-  await app.logIn(new Realm.Credentials.anonymous());
+  await realmApp.logIn(new Realm.Credentials.anonymous());
   const realm = await Realm.open({
     schema: [Contact],
     sync: {
-      user: app.currentUser,
+      user: realmApp.currentUser,
       partitionValue: partitionValueString
     }
   });
@@ -103,11 +101,11 @@ async function update(body) {
 
 async function save(body) {
   console.log("SAVE");
-  await app.logIn(new Realm.Credentials.anonymous());
+  await realmApp.logIn(new Realm.Credentials.anonymous());
   const realm = await Realm.open({
     schema: [Contact],
     sync: {
-      user: app.currentUser,
+      user: realmApp.currentUser,
       partitionValue: partitionValueString
     }
   });
@@ -129,12 +127,12 @@ async function read() {
   // authentication providers accept additional data, like a user's email and
   // password.
   // You can log in with any set of credentials using `api.logIn()`
-  const user = await app.logIn(new Realm.Credentials.anonymous());
+  const user = await realmApp.logIn(new Realm.Credentials.anonymous());
   console.log(`logged in with user ${user.id}`);
   const realm = await Realm.open({
     schema: [Contact],
     sync: {
-      user: app.currentUser,
+      user: realmApp.currentUser,
       partitionValue: partitionValueString
     }
   });

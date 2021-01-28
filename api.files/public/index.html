@@ -24,12 +24,20 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active">
+                        <a id="singin" class="nav-link" href="" data-toggle="modal" data-target="#signIn"> SignIn</a>
+                    </li>
+                    <li class="nav-item active">
                         <a class="nav-link" href="#addContact" data-toggle="modal" data-target="#addContact">Add
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" target="_blank" href="" data-toggle="modal" data-target="#informationModal"> GraphQL</a>
+                        <a class="nav-link" target="_blank" href="" data-toggle="modal" data-target="#informationModal">
+                            GraphQL</a>
+                    </li>
+                    <li class="nav-item active">
+                        <button id="username" type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#logout" hidden></button>
                     </li>
                 </ul>
             </div>
@@ -81,7 +89,8 @@
                 </div>
                 <div class="modal-footer">
                     <button id="btnSaveContact" onclick="saveContact()" type="button" class="btn btn-primary">
-                        <span id="loadingAdd" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>Save
+                        <span id="loadingAdd" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"
+                            hidden></span>Save
                     </button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
@@ -112,12 +121,14 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button id="btnDeleteContact" onclick="deleteContact($('#contactId').val())" type="button" class="btn btn-danger mr-auto">
-                        <span id="loadingDelete" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>
+                    <button id="btnDeleteContact" onclick="deleteContact($('#contactId').val())" type="button"
+                        class="btn btn-danger mr-auto">
+                        <span id="loadingDelete" class="spinner-border spinner-border-sm" role="status"
+                            aria-hidden="true" hidden></span>
                         Delete</button>
-                    <button id="btnUpdateContact" onclick="updateContact()" type="button"
-                        class="btn btn-primary">
-                        <span id="loadingUpdate" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden></span>
+                    <button id="btnUpdateContact" onclick="updateContact()" type="button" class="btn btn-primary">
+                        <span id="loadingUpdate" class="spinner-border spinner-border-sm" role="status"
+                            aria-hidden="true" hidden></span>
                         Update</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
@@ -135,8 +146,10 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>In order to be able to use this GraphQL server within this project, you need to clone this repository <a href="https://github.com/josmanperez/ContactsRealmGraphQL"> ContactsRealmGraphQL </a> 
-                    an run it to use GraphiQL querys to this application.</a></p>
+                    <p>In order to be able to use this GraphQL server within this project, you need to clone this
+                        repository <a href="https://github.com/josmanperez/ContactsRealmGraphQL"> ContactsRealmGraphQL
+                        </a>
+                        an run it to use GraphiQL querys to this application.</a></p>
                 </div>
                 <div class="modal-footer">
                     <a class="btn btn-primary" href="http://localhost:5001/graphql" role="button">Ok</a>
@@ -145,6 +158,63 @@
             </div>
         </div>
     </div>
+
+    <div id="signIn" class="modal fade show" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">SingIn</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="formLogInEmail">Email</label>
+                            <input type="text" class="form-control" id="formLogInEmail">
+                        </div>
+                        <div class="form-group">
+                            <label for="formLogInPass">Password</label>
+                            <input type="password" class="form-control" id="formLogInPass">
+                        </div>
+                        <p id="contactId" class="invisible" type="text" hidden>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnLogIn" onclick="logIn()" type="button" class="btn btn-primary">
+                        <span id="loadingLogin" class="spinner-border spinner-border-sm" role="status"
+                            aria-hidden="true" hidden></span>SignIn
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="logout" class="modal fade show" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Logout</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure do you want to log out?</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnLogout" onclick="logOut()" type="button" class="btn btn-danger mr-auto">
+                        <span id="loadingLogout" class="spinner-border spinner-border-sm" role="status"
+                            aria-hidden="true" hidden></span>
+                        Logout</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Bootstrap core JS-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

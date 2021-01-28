@@ -127,3 +127,57 @@ function showContactTable() {
     ]
   });
 }
+
+function logIn() {
+  console.log("login");
+  var email = $('#formLogInEmail').val()
+  var pass = $('#formLogInPass').val()
+  var data = { 'email': email, 'pass': pass };
+  $.ajax({
+    type: "post",
+    url: "http://localhost:5000/users/signin",
+    contentType: 'application/json',
+    data: JSON.stringify(data),
+    beforeSend: function () {
+      $('#btnLogIn').attr('disabled', true);
+      $('#loadingLogin').attr('hidden', false);
+    },
+    success: function (msg) {
+      console.log(msg);
+      $('#username').html(email);
+      $('#username').attr('hidden', false);
+    },
+    error: function (jqXhr, textStatus, errorThrown) {
+      console.error(errorThrown);
+    },
+    complete: function () {
+      $('#loadingLogin').attr('hidden', true);
+      $('#btnLogIn').attr('disabled', false);
+      $('#signIn').modal('hide');
+    }
+  });
+}
+
+function logOut() {
+  $.ajax({
+    type: "post",
+    url: "http://localhost:5000/users/logout",
+    beforeSend: function () {
+      $('#btnLogout').attr('disabled', true);
+      $('#loadingLogout').attr('hidden', false);
+    },
+    success: function (msg) {
+      console.log(msg);
+      $('#username').html('');
+      $('#username').attr('hidden', true);
+    },
+    error: function (jqXhr, textStatus, errorThrown) {
+      console.error(errorThrown);
+    },
+    complete: function () {
+      $('#loadingLogout').attr('hidden', true);
+      $('#btnLogout').attr('disabled', false);
+      $('#logout').modal('hide');
+    }
+  });
+}

@@ -3,7 +3,7 @@ const express = require("express");
 const User = {
   name: 'Usuario',
   properties: {
-    _id: 'objectId',
+    _id: 'string',
     _partition: 'string',
     name: 'string',
   },
@@ -17,8 +17,13 @@ router.post("/signin", async (req, res) => {
   if (!("email" in req.body) || !("pass" in req.body)) {
     res.status(400).send("Missing email/pass");
   } else {
-    const user = await signIn(req.body);
-    res.status(200).send(`User id: ${user.id} logged in`);
+    try {
+      const user = await signIn(req.body);
+      res.status(200).send(`User id: ${user.id} logged in`);
+    } catch (error) {
+      console.error("Failed to log in", error.message);
+      res.status(404).send(error.message);
+    }
   }
 });
 
@@ -40,7 +45,7 @@ async function signIn(body) {
     console.log("Successfully logged in!", user.id)
     return user;
   } catch (err) {
-    console.error("Failed to log in", err.message);
+    throw err
   }
 }
 

@@ -146,9 +146,12 @@ function logIn() {
       console.log(msg);
       $('#username').html(email);
       $('#username').attr('hidden', false);
+      $('#singin').parent().removeClass('active');
+      $('#singin').addClass('disabled');
     },
     error: function (jqXhr, textStatus, errorThrown) {
       console.error(errorThrown);
+      alert(jqXhr.responseText);
     },
     complete: function () {
       $('#loadingLogin').attr('hidden', true);
@@ -170,6 +173,8 @@ function logOut() {
       console.log(msg);
       $('#username').html('');
       $('#username').attr('hidden', true);
+      $('#singin').removeClass('disabled');
+      $('#singin').parent().addClass('active');
     },
     error: function (jqXhr, textStatus, errorThrown) {
       console.error(errorThrown);

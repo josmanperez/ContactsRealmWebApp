@@ -1,6 +1,7 @@
 const express = require("express");
 const BSON = require("bson");
-const partitionValueString = "contacts"
+const partitionValueString = "contacts";
+
 var isListener = false;
 
 const Contact = {
@@ -10,6 +11,16 @@ const Contact = {
     _partition: 'string',
     firstName: 'string',
     lastName: 'string',
+  },
+  primaryKey: '_id',
+};
+
+const User = {
+  name: 'Usuario',
+  properties: {
+    _id: 'string',
+    _partition: 'string',
+    name: 'string',
   },
   primaryKey: '_id',
 };

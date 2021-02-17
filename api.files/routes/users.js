@@ -1,4 +1,7 @@
 const express = require("express");
+const {OAuth2Client} = require('google-auth-library');
+require('dotenv').config();
+const client = new OAuth2Client(process.env.CLIENT_ID);
 
 const User = {
   name: 'Usuario',
@@ -18,7 +21,7 @@ router.post("/signin", async (req, res) => {
     res.status(400).send("Missing email/pass");
   } else {
     try {
-      const user = await signIn(req.body);
+      const user = await emailSignIn(req.body);
       res.status(200).send(`User id: ${user.id} logged in`);
     } catch (error) {
       console.error("Failed to log in", error.message);
@@ -27,18 +30,8 @@ router.post("/signin", async (req, res) => {
   }
 });
 
-// Logout
-router.post("/logout", async (req, res) => {
-  const success = await logOut();
-  if (success) {
-    res.status(200).send();
-  } else {
-    res.status(400).send("Can not log out the user");
-  }
-})
-
-async function signIn(body) {
-  console.log("SigIn");
+async function emailSignIn(body) {
+  console.log("Email/Pass SigIn");
   const credentials = Realm.Credentials.emailPassword(body.email, body.pass);
   try {
     const user = await realmApp.logIn(credentials);
@@ -48,6 +41,58 @@ async function signIn(body) {
     throw err
   }
 }
+
+// SignIn with Google
+router.post("/signin/google", async (req, res) => {
+  if (!("id_token" in req.body)) {
+    res.status(400).send("Missing id_token")
+  } else {
+    const token = req.body.id_token;
+    // Validate the integrity of the token
+    verify(token).catch(error => {
+      console.error(error);
+      res.status(400).send(error.message);
+    });
+    try {
+      const user = await googleSingIn(token);
+      res.status(200).send(`User id: ${user.id} logged in`);
+    } catch (error) {
+      console.error("Failed to log in", error.message);
+      res.status(404).send(error.message);
+    }
+  }
+});
+
+async function googleSingIn(token) {
+  console.log("Google SigIn")
+  const credentials = Realm.Credentials.google(token);
+  return await realmApp.logIn(credentials).then(user => {
+    console.log(`Logged in with id: ${user.id}`);
+    return user;
+  }).catch(error => {
+    throw error;
+  });
+}
+
+async function verify(token) {
+  const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.CLIENT_ID
+  });
+  console.log(ticket);
+  const payload = ticket.getPayload();
+  const userid = payload['sub'];
+}
+
+// Logout
+router.post("/logout", async (req, res) => {
+  const success = await logOut();
+  if (success) {
+    res.status(200).send();
+  } else {
+    res.status(400).send("Can not log out the user");
+  }
+});
 
 async function logOut() {
   console.log("LogOut");

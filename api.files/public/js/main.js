@@ -186,3 +186,30 @@ function logOut() {
     }
   });
 }
+
+function onSignIn(googleUser) {
+  var profile = googleUser.getBasicProfile();
+  var id_token = googleUser.getAuthResponse().id_token;
+  console.log('Name: ' + profile.getName());
+  var data = { 'id_token': id_token };
+  $.ajax({
+    type: "post",
+    url: "http://localhost:5000/users/signin/google",
+    contentType: 'application/json',
+    data: JSON.stringify(data),
+    success: function (msg) {
+      console.log(msg);
+      $('#username').html(profile.getName());
+      $('#username').attr('hidden', false);
+      $('#singin').parent().removeClass('active');
+      $('#singin').addClass('disabled');
+    },
+    error: function (jqXhr, textStatus, errorThrown) {
+      console.error(errorThrown);
+      alert(jqXhr.responseText);
+    },
+    complete: function () {
+      $('#signIn').modal('hide');
+    }
+  })
+}

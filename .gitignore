@@ -1,5 +1,6 @@
 node_modules/
 mongodb-realm/
 .DS_Store
+.env
 package-lock.json
 logs/nginx/access.log

@@ -9,11 +9,51 @@ const User = {
     _id: 'string',
     _partition: 'string',
     name: 'string',
+    providerType: 'string'
+  },
+  primaryKey: '_id',
+};
+
+const Contact = {
+  name: 'Contact',
+  properties: {
+    _id: 'objectId',
+    _partition: 'string',
+    firstName: 'string',
+    lastName: 'string',
   },
   primaryKey: '_id',
 };
 
 const router = express.Router();
+
+router.get("/connected", async (req, res) => {
+  console.log("Is user connected?");
+  if (realmApp.currentUser == null) {
+    res.status(404).send("Not user connected");
+  } else {
+    const user = await read().catch(error => {
+      console.error(error);
+      res.status(400).send(error.message);
+    });
+    console.log(`user ${user.name} is connected`);
+    user != null ? res.status(200).send(user) : res.status(404).send("User not found");
+  }
+});
+
+/**
+ * Read user information
+ */
+async function read() {
+  const realm = await Realm.open({
+    schema: [User, Contact],
+    sync: {
+      user: realmApp.currentUser,
+      partitionValue: `user=${realmApp.currentUser.id}`
+    }
+  });
+  return usuario = realm.objects("Usuario")[0];
+};
 
 // SignIn with Email/Password
 router.post("/signin", async (req, res) => {
@@ -24,8 +64,21 @@ router.post("/signin", async (req, res) => {
       const user = await emailSignIn(req.body);
       res.status(200).send(`User id: ${user.id} logged in`);
     } catch (error) {
-      console.error("Failed to log in", error.message);
-      res.status(404).send(error.message);
+      console.error(error);
+      if (error.code == -1) {
+        // Create the user
+        try {
+          await registerEmailPassword(req.body);
+          const user = await emailSignIn(req.body);
+          res.status(200).send(`User id: ${user.id} logged in`);
+        } catch (error) {
+          console.error(error.message);
+          res.status(400).send(error.message); 
+        }
+      } else {
+        console.error("Failed to log in", error.message);
+        res.status(404).send(error.message);
+      }
     }
   }
 });
@@ -40,6 +93,14 @@ async function emailSignIn(body) {
   } catch (err) {
     throw err
   }
+}
+
+async function registerEmailPassword(body) {
+  console.log("Register email/password");
+  await realmApp.emailPasswordAuth.registerUser(body.email, body.pass)
+  .catch(error => {
+    throw error
+  });
 }
 
 // SignIn with Google

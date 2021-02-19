@@ -21,19 +21,21 @@ const User = {
     _id: 'string',
     _partition: 'string',
     name: 'string',
+    providerType: 'string'
   },
   primaryKey: '_id',
 };
 
 const router = express.Router();
 
-// Get Contacts List
+/** Get Contacts List */ 
 router.get('/', async (req, res) => {
-  const contacts = await read().catch(err => {
-    console.error("Failed to execute in:", err)
+  const contacts = await read(req.query.contacts).catch(err => {
+    console.error("Failed to execute in:", err);
+    res.status(400).send(`Failed to execute in ${err}`);
   });
   res.send(contacts);
-})
+});
 
 // Add contact
 router.post('/', async (req, res) => {
@@ -42,6 +44,7 @@ router.post('/', async (req, res) => {
   } else {
     await save(req.body).catch(err => {
       console.error("Failed to save contact", err);
+      res.status(400).send(`Failed to execute in ${err}`);
     })
     socket.emit("contact", "new contact created");
     res.status(201).send();
@@ -131,20 +134,20 @@ async function save(body) {
   });
 };
 
-async function read() {
+async function read(query) {
   console.log("READ");
-  // Create a Credentials object to identify the user.
-  // Anonymous credentials don't have any identifying information, but other
-  // authentication providers accept additional data, like a user's email and
-  // password.
-  // You can log in with any set of credentials using `api.logIn()`
-  const user = await realmApp.logIn(new Realm.Credentials.anonymous());
-  console.log(`logged in with user ${user.id}`);
+  var partitionValue = "contacts";
+  // if (query == null) {
+  //   partitionValue = "contacts";
+  // } else {
+  //   partitionValue = `user=${realmApp.currentUser.id}`;
+  // }
+  // console.log(partitionValue);
   const realm = await Realm.open({
-    schema: [Contact],
+    schema: [Contact, User],
     sync: {
       user: realmApp.currentUser,
-      partitionValue: partitionValueString
+      partitionValue: `user=${realmApp.currentUser.id}`
     }
   });
   const contacts = realm.objects("Contact").sorted("firstName");

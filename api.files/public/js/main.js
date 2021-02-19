@@ -1,5 +1,22 @@
 $(document).ready(function () {
-  var table = showContactTable(table);
+  //var table = showContactTable(table);
+  $.ajax({
+    type: "get",
+    url: "http://localhost:5000/users/connected",
+    contentType: 'application/json',
+    success: function (msg) {
+      console.log(msg);
+      $('#username').html(msg.name);
+      $('#username').attr('hidden', false);
+      $('#singin').parent().removeClass('active');
+      $('#singin').addClass('disabled');
+      var table = showContactTable(table);
+    },
+    // error: function (jqXhr, textStatus, errorThrown) {
+    //   console.error(errorThrown);
+    //   alert(jqXhr.responseText);
+    // }
+  });
 
   $('#contactTable tbody').on('click', 'tr', function () {
     var firstName = table.row(this).data().firstName;

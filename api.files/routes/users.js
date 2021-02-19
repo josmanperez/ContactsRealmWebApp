@@ -27,9 +27,28 @@ const Contact = {
 
 const router = express.Router();
 
+/**
+ * Function to open a Realm and stores it globally
+ * @param {String} partitionValue: String that defines de partition
+ */
+async function openRealm(partitionValue) {
+  console.log("open a Realm");
+  myRealm = await Realm.open({
+    schema: [Contact, User],
+    sync: {
+      user: realmApp.currentUser,
+      partitionValue: partitionValue
+    }
+  });
+}
+
+/**
+ * GET IF USER IS CONNECCTED
+ */
 router.get("/connected", async (req, res) => {
   console.log("Is user connected?");
   if (realmApp.currentUser == null) {
+    await openRealm('contacts');
     res.status(404).send("Not user connected");
   } else {
     const user = await read().catch(error => {
@@ -37,6 +56,7 @@ router.get("/connected", async (req, res) => {
       res.status(400).send(error.message);
     });
     console.log(`user ${user.name} is connected`);
+    await openRealm(`user=${realmApp.currentUser.id}`);
     user != null ? res.status(200).send(user) : res.status(404).send("User not found");
   }
 });

@@ -3,6 +3,7 @@ const app = express();
 const server = require('http').createServer(app);
 const Realm = require("realm");
 global.realmApp = new Realm.App({ id: "synctest-jigxx" });
+global.myRealm;
 
 global.io = require('socket.io')(server, {
 	cors: {

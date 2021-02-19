@@ -136,21 +136,7 @@ async function save(body) {
 
 async function read(query) {
   console.log("READ");
-  var partitionValue = "contacts";
-  // if (query == null) {
-  //   partitionValue = "contacts";
-  // } else {
-  //   partitionValue = `user=${realmApp.currentUser.id}`;
-  // }
-  // console.log(partitionValue);
-  const realm = await Realm.open({
-    schema: [Contact, User],
-    sync: {
-      user: realmApp.currentUser,
-      partitionValue: `user=${realmApp.currentUser.id}`
-    }
-  });
-  const contacts = realm.objects("Contact").sorted("firstName");
+  const contacts = myRealm.objects("Contact").sorted("firstName");
   console.log("listener: " + isListener)
   if (!(isListener)) {
     contacts.addListener(listener);

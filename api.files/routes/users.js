@@ -29,15 +29,21 @@ const router = express.Router();
 
 /**
  * Function to open a Realm and stores it globally
- * @param {String} partitionValue: String that defines de partition
+ * @returns An instance of Realm (anonymous or of the user logged in)
  */
-async function openRealm(partitionValue) {
-  console.log("open a Realm");
-  myRealm = await Realm.open({
+async function openRealm() {
+  var partition = "";
+  if (realmApp.currentUser == null) {
+    partition = "contacts";
+  } else {
+    partition = `user=${realmApp.currentUser.id}`;
+  }
+  console.log(`open a Realm for user with partition: ${partition}`);
+  return await Realm.open({
     schema: [Contact, User],
     sync: {
       user: realmApp.currentUser,
-      partitionValue: partitionValue
+      partitionValue: partition
     }
   });
 }
@@ -48,16 +54,18 @@ async function openRealm(partitionValue) {
 router.get("/connected", async (req, res) => {
   console.log("Is user connected?");
   if (realmApp.currentUser == null) {
-    await openRealm('contacts');
     res.status(404).send("Not user connected");
   } else {
     const user = await read().catch(error => {
       console.error(error);
       res.status(400).send(error.message);
     });
-    console.log(`user ${user.name} is connected`);
-    await openRealm(`user=${realmApp.currentUser.id}`);
-    user != null ? res.status(200).send(user) : res.status(404).send("User not found");
+    if (user != null) {
+      console.log(`user ${user.name} is connected`);
+      res.status(200).send(user)
+     } else {
+      res.status(404).send("User not found");
+     } 
   }
 });
 
@@ -65,14 +73,8 @@ router.get("/connected", async (req, res) => {
  * Read user information
  */
 async function read() {
-  const realm = await Realm.open({
-    schema: [User, Contact],
-    sync: {
-      user: realmApp.currentUser,
-      partitionValue: `user=${realmApp.currentUser.id}`
-    }
-  });
-  return usuario = realm.objects("Usuario")[0];
+  const realm = await openRealm();
+  return realm.objects("Usuario")[0];
 };
 
 // SignIn with Email/Password

@@ -28,6 +28,27 @@ const User = {
 
 const router = express.Router();
 
+/**
+ * Function to open a Realm and stores it globally
+ * @returns An instance of Realm (anonymous or of the user logged in)
+ */
+async function openRealm() {
+  var partition = "";
+  if (realmApp.currentUser == null) {
+    partition = "contacts";
+  } else {
+    partition = `user=${realmApp.currentUser.id}`;
+  }
+  console.log(`open a Realm for user with partition: ${partition}`);
+  return await Realm.open({
+    schema: [Contact, User],
+    sync: {
+      user: realmApp.currentUser,
+      partitionValue: partition
+    }
+  });
+}
+
 /** Get Contacts List */ 
 router.get('/', async (req, res) => {
   const contacts = await read(req.query.contacts).catch(err => {
@@ -136,7 +157,8 @@ async function save(body) {
 
 async function read(query) {
   console.log("READ");
-  const contacts = myRealm.objects("Contact").sorted("firstName");
+  const realm = await openRealm();
+  const contacts = realm.objects("Contact").sorted("firstName");
   console.log("listener: " + isListener)
   if (!(isListener)) {
     contacts.addListener(listener);

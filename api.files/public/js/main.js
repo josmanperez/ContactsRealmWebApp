@@ -159,7 +159,11 @@ function updateContact() {
 }
 
 function loadDataTable() {
-  $('#contactTable').DataTable().ajax.reload();
+  if ($.fn.dataTable.isDataTable('#contactTable')) {
+    $('#contactTable').DataTable().ajax.reload();
+  } else {
+    showContactTable();
+  }
 }
 
 function showContactTable() {
@@ -206,7 +210,7 @@ function logIn() {
       $('#username').attr('hidden', false);
       $('#singin').parent().removeClass('active');
       $('#singin').addClass('disabled');
-      showContactTable();
+      loadDataTable();
     },
     error: function (jqXhr, textStatus, errorThrown) {
       console.error(errorThrown);

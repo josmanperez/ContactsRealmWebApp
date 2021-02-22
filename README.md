@@ -4,7 +4,7 @@ Application to demonstrate how to use Realm Sync with a Web App to do basic oper
 # Live Example
 This is the live example of the Web application running
 
-[![Live Example](http://g.recordit.co/5Ig4TUvKY6.gif)](https://drive.google.com/file/d/1jv02y5Z7yf8lUe57jUKWi_xne3dKro8t/view?usp=sharing)
+[![Live Example](https://i.imgur.com/uPOxt73.gif)](https://i.imgur.com/uPOxt73.gif)
 
 # Description
 

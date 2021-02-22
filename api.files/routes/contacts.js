@@ -150,18 +150,27 @@ function listener(contacts, changes) {
   changes.insertions.forEach((index) => {
     console.log(`insert index: ${index}`);
     let contact = contacts[index];
-    console.log("new contact: " + contact);
-    socket.emit("contact", "new contact created");
+    console.log("new contact: " + JSON.stringify(contact));
+    socket.emit("add:contact", {
+      contact: contact,
+      message: "New contact added"
+    });
   });
   changes.modifications.forEach((index) => {
     console.log(`update index: ${index}`);
     let contact = contacts[index];
-    console.log("updated contact: " + contact);
-    socket.emit("contact", "contact updated");
+    console.log("updated contact: " + JSON.stringify(contact));
+    socket.emit("update:contact", {
+      contact: contact,
+      message: "Contact updated"
+    });
   });
   changes.deletions.forEach((index) => {
     console.log(`deletion index: ${index}`);
-    socket.emit("contact", "contact deleted");
+    socket.emit("delete:contact", {
+      contact: null,
+      message: "Contact deleted"
+    });
   });
 }
 

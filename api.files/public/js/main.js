@@ -1,5 +1,4 @@
 $(document).ready(function () {
-  //var table = showContactTable(table);
   $.ajax({
     type: "get",
     url: "http://localhost:5000/users/connected",
@@ -10,14 +9,12 @@ $(document).ready(function () {
       $('#username').attr('hidden', false);
       $('#singin').parent().removeClass('active');
       $('#singin').addClass('disabled');
-      var table = showContactTable(table);
-    },
-    // error: function (jqXhr, textStatus, errorThrown) {
-    //   console.error(errorThrown);
-    //   alert(jqXhr.responseText);
-    // }
+      showContactTable();
+    }
   });
+});
 
+function addTableListener(table) {
   $('#contactTable tbody').on('click', 'tr', function () {
     var firstName = table.row(this).data().firstName;
     var lastName = table.row(this).data().lastName;
@@ -27,7 +24,7 @@ $(document).ready(function () {
     $("#contactId").val(id);
     $('#updateContact').modal('show');
   });
-});
+}
 
 function deleteContact(id) {
   $.ajax({
@@ -125,7 +122,7 @@ function loadDataTable() {
 
 function showContactTable() {
   // Datatable setup
-  return $('#contactTable').DataTable({
+  var table = $('#contactTable').DataTable({
     paging: false,
     info: true,
     searching: true,
@@ -143,6 +140,8 @@ function showContactTable() {
       { data: 'lastName' }
     ]
   });
+  addTableListener(table);
+  return table;
 }
 
 function logIn() {

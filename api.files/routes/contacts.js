@@ -1,6 +1,7 @@
 const express = require("express");
 const BSON = require("bson");
 const partitionValueString = "contacts";
+var partition = "";
 
 var isListener = false;
 
@@ -33,7 +34,6 @@ const router = express.Router();
  * @returns An instance of Realm (anonymous or of the user logged in)
  */
 async function openRealm() {
-  var partition = "";
   if (realmApp.currentUser == null) {
     partition = "contacts";
   } else {
@@ -100,14 +100,7 @@ router.delete('/', async (req, res) => {
 
 async function remove(body) {
   console.log("DETELE");
-  await realmApp.logIn(new Realm.Credentials.anonymous());
-  const realm = await Realm.open({
-    schema: [Contact],
-    sync: {
-      user: realmApp.currentUser,
-      partitionValue: partitionValueString
-    }
-  });
+  const realm = await openRealm();
   let id = new BSON.ObjectID(body._id);
   const contact = realm.objectForPrimaryKey('Contact', id);
   realm.write(() => {
@@ -117,14 +110,7 @@ async function remove(body) {
 
 async function update(body) {
   console.log("UPDATE");
-  await realmApp.logIn(new Realm.Credentials.anonymous());
-  const realm = await Realm.open({
-    schema: [Contact],
-    sync: {
-      user: realmApp.currentUser,
-      partitionValue: partitionValueString
-    }
-  });
+  const realm = await openRealm();
   let id = new BSON.ObjectID(body._id);
   const contact = realm.objectForPrimaryKey('Contact', id);
   const updatedContact = realm.write(() => {
@@ -136,18 +122,11 @@ async function update(body) {
 
 async function save(body) {
   console.log("SAVE");
-  await realmApp.logIn(new Realm.Credentials.anonymous());
-  const realm = await Realm.open({
-    schema: [Contact],
-    sync: {
-      user: realmApp.currentUser,
-      partitionValue: partitionValueString
-    }
-  });
+  const realm = await openRealm();
   realm.write(() => {
     const newContact = realm.create("Contact", {
       _id: new BSON.ObjectID(),
-      _partition: partitionValueString,
+      _partition: partition,
       firstName: body.firstName,
       lastName: body.lastName,
     });

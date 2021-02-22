@@ -54,6 +54,7 @@ async function openRealm() {
 router.get("/connected", async (req, res) => {
   console.log("Is user connected?");
   if (realmApp.currentUser == null) {
+    console.log("no user connected");
     res.status(404).send("Not user connected");
   } else {
     const user = await read().catch(error => {
@@ -179,9 +180,8 @@ router.post("/logout", async (req, res) => {
 
 async function logOut() {
   console.log("LogOut");
-  console.log(JSON.stringify(realmApp));
   if (realmApp.currentUser != null) {
-    await realmApp.allUsers[realmApp.currentUser.id].logOut();
+    await realmApp.currentUser.logOut();
     return true;
   } else {
     return false;

@@ -1,18 +1,60 @@
+const status = {
+  INFO: 0,
+  SUCCESS: 1,
+  ERROR: 2
+};
+
 $(document).ready(function () {
+  /**
+   * Test if we are logged
+   */
   $.ajax({
     type: "get",
     url: "http://localhost:5000/users/connected",
     contentType: 'application/json',
+    beforeSend: function () {
+      $('#singin').parent().removeClass('active');
+      $('#singin').addClass('disabled');
+      $('#loadingUser').attr('hidden', false);
+      showToast(status.INFO);
+    },
     success: function (msg) {
       console.log(msg);
       $('#username').html(msg.name);
       $('#username').attr('hidden', false);
       $('#singin').parent().removeClass('active');
       $('#singin').addClass('disabled');
+      showToast(status.SUCCESS);
       showContactTable();
+    },
+    error: function () {
+      $('#singin').parent().addClass('active');
+      $('#singin').removeClass('disabled');
+      showToast(status.ERROR);
+    },
+    complete: function () {
+
     }
   });
 });
+
+function showToast(level) {
+  toastr.remove();
+  toastr.options.positionClass = "toast-top-center";
+  toastr.options.timeOut = "2000";
+  toastr.options.progressBar = false
+  switch (level) {
+    case status.INFO:
+      toastr.info("Checking if user is logged in");
+      break;
+    case status.SUCCESS:
+      toastr.success("User is logged");
+      break;
+    case status.ERROR:
+      toastr.error("Please, sign-in first to use the app");
+      break;
+  }
+}
 
 function addTableListener(table) {
   $('#contactTable tbody').on('click', 'tr', function () {
@@ -32,17 +74,17 @@ function deleteContact(id) {
     url: 'http://localhost:5000/contacts',
     contentType: 'application/json',
     data: JSON.stringify({ '_id': id }),
-    beforeSend: function(xhr) {
-      $('#loadingDelete').attr('hidden',false);
+    beforeSend: function (xhr) {
+      $('#loadingDelete').attr('hidden', false);
       $('#btnDeleteContact').attr('disabled', true);
     },
     success: function (msg) {
       console.log('The user has been sent to be deleted');
     },
     error: function (jqXhr, textStatus, errorThrown) {
-      console.log(errorThrown);      
+      console.log(errorThrown);
     },
-    complete: function() {
+    complete: function () {
       $('#loadingDelete').attr('hidden', true);
       $('#btnDeleteContact').attr('disabled', false);
       $('#updateContact').modal('hide');
@@ -62,7 +104,7 @@ function saveContact() {
       url: 'http://localhost:5000/contacts',
       contentType: 'application/json',
       data: JSON.stringify(data),
-      beforeSend: function() {
+      beforeSend: function () {
         $('#loadingAdd').attr('hidden', false);
         $('#btnSaveContact').attr('disabled', true);
       },
@@ -70,9 +112,9 @@ function saveContact() {
         console.log(`The user has been sent to be created. ${msg}`);
       },
       error: function (jqXhr, textStatus, errorThrown) {
-        console.error(errorThrown);        
+        console.error(errorThrown);
       },
-      complete: function() {
+      complete: function () {
         $('#addContact').modal('hide');
         $('#loadingAdd').attr('hidden', true);
         $('#btnSaveContact').attr('disabled', false);
@@ -97,7 +139,7 @@ function updateContact() {
       url: 'http://localhost:5000/contacts',
       contentType: 'application/json',
       data: JSON.stringify(data),
-      beforeSend: function() {
+      beforeSend: function () {
         $('#btnUpdateContact').attr('disabled', true);
         $('#loadingUpdate').attr('hidden', false);
       },
@@ -107,7 +149,7 @@ function updateContact() {
       error: function (jqXhr, textStatus, errorThrown) {
         console.error(errorThrown);
       },
-      complete: function() {
+      complete: function () {
         $('#updateContact').modal('hide');
         $('#loadingUpdate').attr('hidden', true);
         $('#btnUpdateContact').attr('disabled', false);
@@ -129,7 +171,7 @@ function showContactTable() {
     order: [[1, "asc"]],
     ajax: {
       url: 'http://localhost:5000/contacts',
-      dataSrc: ''
+      dataSrc: '',
     },
     columns: [
       {
@@ -164,6 +206,7 @@ function logIn() {
       $('#username').attr('hidden', false);
       $('#singin').parent().removeClass('active');
       $('#singin').addClass('disabled');
+      showContactTable();
     },
     error: function (jqXhr, textStatus, errorThrown) {
       console.error(errorThrown);
@@ -175,6 +218,34 @@ function logIn() {
       $('#signIn').modal('hide');
     }
   });
+}
+
+function onSignIn(googleUser) {
+  var profile = googleUser.getBasicProfile();
+  var id_token = googleUser.getAuthResponse().id_token;
+  console.log('Name: ' + profile.getName());
+  var data = { 'id_token': id_token };
+  $.ajax({
+    type: "post",
+    url: "http://localhost:5000/users/signin/google",
+    contentType: 'application/json',
+    data: JSON.stringify(data),
+    success: function (msg) {
+      console.log(msg);
+      $('#username').html(profile.getName());
+      $('#username').attr('hidden', false);
+      $('#singin').parent().removeClass('active');
+      $('#singin').addClass('disabled');
+      loadDataTable();
+    },
+    error: function (jqXhr, textStatus, errorThrown) {
+      console.error(errorThrown);
+      alert(jqXhr.responseText);
+    },
+    complete: function () {
+      $('#signIn').modal('hide');
+    }
+  })
 }
 
 function logOut() {
@@ -191,6 +262,9 @@ function logOut() {
       $('#username').attr('hidden', true);
       $('#singin').removeClass('disabled');
       $('#singin').parent().addClass('active');
+      var table = $('#contactTable').DataTable()
+      table.clear();
+      table.draw();
     },
     error: function (jqXhr, textStatus, errorThrown) {
       console.error(errorThrown);
@@ -203,29 +277,6 @@ function logOut() {
   });
 }
 
-function onSignIn(googleUser) {
-  var profile = googleUser.getBasicProfile();
-  var id_token = googleUser.getAuthResponse().id_token;
-  console.log('Name: ' + profile.getName());
-  var data = { 'id_token': id_token };
-  $.ajax({
-    type: "post",
-    url: "http://localhost:5000/users/signin/google",
-    contentType: 'application/json',
-    data: JSON.stringify(data),
-    success: function (msg) {
-      console.log(msg);
-      $('#username').html(profile.getName());
-      $('#username').attr('hidden', false);
-      $('#singin').parent().removeClass('active');
-      $('#singin').addClass('disabled');
-    },
-    error: function (jqXhr, textStatus, errorThrown) {
-      console.error(errorThrown);
-      alert(jqXhr.responseText);
-    },
-    complete: function () {
-      $('#signIn').modal('hide');
-    }
-  })
+function showSubtitle(success) {
+  success ? $('#subtitle').html('Your contacts') : $('#subtitle').html('Please, sign in to your Realm Sync to use the App');
 }

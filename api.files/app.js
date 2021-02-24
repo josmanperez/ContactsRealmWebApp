@@ -2,7 +2,9 @@ const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
 const Realm = require("realm");
-global.realmApp = new Realm.App({ id: "synctest-jigxx" });
+require('dotenv').config();
+
+global.realmApp = new Realm.App({ id: process.env.APP_ID });
 global.myRealm;
 
 global.io = require('socket.io')(server, {

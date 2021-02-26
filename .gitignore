@@ -4,3 +4,4 @@ mongodb-realm/
 .env
 package-lock.json
 logs/nginx/access.log
+logs/nginx/error.log

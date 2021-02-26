@@ -1,35 +1,32 @@
 const socket = io("http://localhost:5000");
 
-toastr.options = {
-  "closeButton": true,
-  "debug": false,
-  "newestOnTop": true,
-  "progressBar": true,
-  "positionClass": "toast-top-right",
-  "preventDuplicates": true,
-  "onclick": null,
-  "showDuration": "300",
-  "hideDuration": "1000",
-  "timeOut": "3000",
-  "extendedTimeOut": "1000",
-  "showEasing": "swing",
-  "hideEasing": "linear",
-  "showMethod": "fadeIn",
-  "hideMethod": "fadeOut"
+const toastLevel = {
+  SUCCESS: 0,
+  WARNING: 1,
+  ERROR: 2
 };
+
+function configureToastSocket() {
+  toastr.remove()
+  toastr.options.positionClass = "toast-top-right";
+  toastr.options.timeOut = "2000";
+}
 
 socket.on("add:contact", arg => {
   loadDataTable();
+  configureToastSocket();
   toastr.success(`${arg.contact.firstName} ${arg.contact.lastName}`,arg.message);
 });
 
 socket.on("update:contact", arg => {
   loadDataTable();
+  configureToastSocket();
   toastr.warning(`${arg.contact.firstName} ${arg.contact.lastName}`,arg.message);
 });
 
 socket.on("delete:contact", arg => {
   loadDataTable();
+  configureToastSocket();
   toastr.error(arg.message);
 });
 

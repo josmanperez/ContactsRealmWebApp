@@ -5,6 +5,7 @@ const Realm = require("realm");
 require('dotenv').config();
 
 global.realmApp = new Realm.App({ id: process.env.APP_ID });
+//Realm.Sync.setLogLevel("trace");
 global.myRealm;
 
 global.io = require('socket.io')(server, {

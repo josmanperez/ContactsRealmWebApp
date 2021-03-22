@@ -9,6 +9,7 @@ const User = {
     _id: 'string',
     _partition: 'string',
     name: 'string',
+    email: 'string',
     providerType: 'string'
   },
   primaryKey: '_id',
@@ -75,7 +76,8 @@ router.get("/connected", async (req, res) => {
  */
 async function read() {
   const realm = await openRealm();
-  return realm.objects("Usuario")[0];
+  const usuario = realm.objectForPrimaryKey("Usuario", realmApp.currentUser.id);
+  return usuario;
 };
 
 // SignIn with Email/Password

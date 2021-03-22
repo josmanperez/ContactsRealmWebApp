@@ -7,7 +7,7 @@ const toastLevel = {
 };
 
 function configureToastSocket() {
-  toastr.remove()
+  toastr.remove();
   toastr.options.positionClass = "toast-top-right";
   toastr.options.timeOut = "2000";
 }
